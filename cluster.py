@@ -1,5 +1,6 @@
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import DBSCAN
 
 #KMeans clustering function
 def kmeans_clustering(n_clusters,word_vector):
