@@ -6,7 +6,7 @@
 
 import math
 import numpy
-
+from scipy.spatial import distance
 
 #calculate entropy for one cluster
 def cluster_entropy(class_in_cluster):
@@ -21,16 +21,46 @@ def cluster_entropy(class_in_cluster):
     
     return -1 * total_entropy
 
+
 def get_cluster_size(clustered_vector):
     cluster_sizes=[]
     for cluster in clustered_vector:
         cluster_sizes.append(len(cluster))
     return cluster_sizes
 
-
+#get centroid of one cluster
+def cluster_centroid(one_cluster):
+    centroid = [0]*len(one_cluster[0])
+    
+    #sum up one cluster
+    for vector in one_cluster:
+        for i in range (0, len(centroid)):
+            centroid[i] += vector[i]
+    
+    #get average
+    for j in range(0,len(centroid)):
+        centroid[j] = centroid[j] / len(one_cluster)
+    
+    return centroid
+    
+def cluster_radius(one_cluster, centroid):
+    sum_distance = 0
+    for vector in one_cluster:
+        sum_distance += distance.euclidean(vector,centroid)
+        
+    radius=sum_distance/(2*len(one_cluster))
+    return radius
+            
+def cluster_SSE(one_cluster, centroid):
+    SSE=0
+    for vector in one_cluster:
+        SSE += (distance.euclidean(vector,centroid))^2
+    return SSE
+    
 #prediction is predicted index of each data from clustering model
 #word_vector is feature vectors used in clustering
 #class_label_vector is the topic labels for each feature vector (article)
+#evaluate clustering quality based on clusters
 def quality_evaluation(prediction, word_vector, class_label_vector):
     
     #get n_cluster
@@ -75,3 +105,25 @@ def quality_evaluation(prediction, word_vector, class_label_vector):
     cluster_sizes=get_cluster_size(clustered_vector)
     #Calculate standard deviation of cluster sizes
     print "Standard deviation of cluster sizes: " +str(numpy.std(cluster_sizes))
+    
+    #get centroids of cluster
+    centroids = []
+    for cluster in clustered_vector:
+        centroids.append(cluster_centroid(cluster))
+    
+    #Calculate cluster radiuses and SSE
+    cluster_radiuses=[]
+    cluster_SSEs=[]
+    
+    for p in range(0,n_clusters):
+        cluster_radiuses.append(cluster_radius(clustered_vector[p],centroids[p]))
+        cluster_SSEs.append(cluster_SSE(clustered_vector[p],centroids[p]))
+    
+    #get average cluster radius
+    avg_radius=sum(cluster_radiuses)/len(cluster_radiuses)
+    print "Average radius of cluster is : "+str(avg_radius)
+    
+    #get average cluster SSE
+    avg_SSE=sum(cluster_SSEs)/len(cluster_SSEs)
+    print "Average SSE of cluster is : "+str(avg_SSE)
+        
