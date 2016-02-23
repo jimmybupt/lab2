@@ -42,7 +42,8 @@ def cluster_centroid(one_cluster):
         centroid[j] = centroid[j] / len(one_cluster)
     
     return centroid
-    
+
+#Calculate radius within one cluster
 def cluster_radius(one_cluster, centroid):
     sum_distance = 0
     for vector in one_cluster:
@@ -50,7 +51,8 @@ def cluster_radius(one_cluster, centroid):
         
     radius=sum_distance/(2*len(one_cluster))
     return radius
-            
+    
+#Calculate SSE within one cluster            
 def cluster_SSE(one_cluster, centroid):
     SSE=0
     for vector in one_cluster:
