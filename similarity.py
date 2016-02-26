@@ -16,6 +16,8 @@ parser.add_option("-e", "--eps", dest="epsilon", metavar="<Epsilon>",
 		  default=10.0)
 parser.add_option("-M", "--min-sample", dest="min_sample", metavar="<Min samples>",
 		  default=10)
+parser.add_option("-t", "--test", dest="small_data",
+		  action="store_true", default=False)
 (options, args) = parser.parse_args()
 
 
@@ -35,6 +37,12 @@ for line in info:
 	cdim = int(line)
 cdim = 20778	
 S = lil_matrix((rdim, cdim))
+
+
+if options.small_data:
+	rdim = 1000;
+	print 'small test set selected, only loading 1000 rows'
+
 print "Reading vectors... ",
 sys.stdout.flush()
 i = 0
@@ -42,7 +50,10 @@ for line in vector_file:
 	data = ast.literal_eval(line);
 	for D in data:
 		S[i, int(D[0])] = float(D[1])
-	i=i+1	
+	i=i+1
+	if i==rdim:
+		break
+	
 print "done"
 S = S.tocsr()
 
@@ -71,7 +82,7 @@ import distance
 #choose cluster method
 import cluster
 if options.algorithm.lower()=="dbscan":
-	prediction=cluster.DBSCAN_clustering(options.epsilon, options.min_sample,S,options.metirc)
+	prediction=cluster.DBSCAN_clustering(options.epsilon, options.min_sample,S,options.metric.lower())
 	print prediction
 elif options.algorithm.lower()=="hierarchical":
 	print "a"
