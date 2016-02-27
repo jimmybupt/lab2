@@ -13,9 +13,9 @@ parser.add_option("-a", "--algorithm", dest="algorithm",
 		  metavar="[DBSCAN|Other]",
 		  default="DBSCAN")
 parser.add_option("-e", "--eps", dest="epsilon", metavar="<Epsilon>",
-		  default=10.0)
+		  type="float", default=10.0)
 parser.add_option("-M", "--min-sample", dest="min_sample", metavar="<Min samples>",
-		  default=10)
+		  type="int", default=10)
 parser.add_option("-t", "--test", dest="small_data",
 		  action="store_true", default=False)
 (options, args) = parser.parse_args()
@@ -36,12 +36,13 @@ rdim = 21578
 for line in info:
 	cdim = int(line)
 cdim = 20778	
-S = lil_matrix((rdim, cdim))
 
 
 if options.small_data:
 	rdim = 1000;
 	print 'small test set selected, only loading 1000 rows'
+
+S = lil_matrix((rdim, cdim))
 
 print "Reading vectors... ",
 sys.stdout.flush()
@@ -81,11 +82,14 @@ import distance
 
 #choose cluster method
 import cluster
+prediction = []
 if options.algorithm.lower()=="dbscan":
 	prediction=cluster.DBSCAN_clustering(options.epsilon, options.min_sample,S,options.metric.lower())
 	print prediction
 elif options.algorithm.lower()=="hierarchical":
 	print "a"
+
+print len(prediction)
 
 #TODO:
 #1. measure time
