@@ -56,7 +56,7 @@ def cluster_radius(one_cluster, centroid):
 def cluster_SSE(one_cluster, centroid):
     SSE=0
     for vector in one_cluster:
-        SSE += (distance.euclidean(vector,centroid))^2
+        SSE += pow((distance.euclidean(vector,centroid)),2)
     return SSE
     
 #prediction is predicted index of each data from clustering model

@@ -18,6 +18,8 @@ parser.add_option("-M", "--min-sample", dest="min_sample", metavar="<Min samples
 		  type="int", default=10)
 parser.add_option("-t", "--test", dest="small_data",
 		  action="store_true", default=False)
+parser.add_option("-k", dest="cluster", metavar="<Cluster>", type="int",
+		  default=10)
 (options, args) = parser.parse_args()
 
 
@@ -25,6 +27,7 @@ parser.add_option("-t", "--test", dest="small_data",
 
 #open vector file
 vector_file = open(options.in_file, 'r')
+label_file = open('label.txt', 'r')
 
 #read vector into classes
 import ast
@@ -54,30 +57,15 @@ for line in vector_file:
 	i=i+1
 	if i==rdim:
 		break
-	
+label = []
+i = 0
+for line in label_file:
+	label.append(ast.literal_eval(line))
+	if i==rdim:
+		break
+
 print "done"
 S = S.tocsr()
-
-
-#compute the pairwise distance
-import distance
-#dist_func = {
-#	'euclidean':distance.euclidean_sparse
-#}
-#func = dist_func[(options.metric.lower())]
-#D_Matrix = []
-#for i in range(0, len(L)-1):
-#	v = []
-#	for j in range(0, i):
-#		d = func(L[i], L[j])
-#		v.append(d)
-#	D_Matrix.append(v)
-
-#encode the matrix and save
-
-#out = open("result.txt",'w')
-#for row in D_Matrix:
-#	print >>out, row
 
 
 #choose cluster method
@@ -85,12 +73,13 @@ import cluster
 prediction = []
 if options.algorithm.lower()=="dbscan":
 	prediction=cluster.DBSCAN_clustering(options.epsilon, options.min_sample,S,options.metric.lower())
-	print prediction
-elif options.algorithm.lower()=="hierarchical":
-	print "a"
+elif options.algorithm.lower()=="kmeans":
+	prediction=cluster.kmeans_clustering(options.cluster, S)
 
 print len(prediction)
 
+
+#print cluster result
 hist = {}
 for item in prediction:
 	if item in hist:
@@ -100,6 +89,13 @@ for item in prediction:
 
 for key in hist:
 	print key," ", hist[key]
+
+#evaluate result
+import quality
+
+quality.quality_evaluation(prediction, S.toarray(), label)
+	
+
 
 #TODO:
 #1. measure time
