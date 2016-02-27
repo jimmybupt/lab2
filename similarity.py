@@ -35,11 +35,11 @@ cdim = 0
 rdim = 21578
 for line in info:
 	cdim = int(line)
-cdim = 20778	
+cdim = 4317	
 
 
 if options.small_data:
-	rdim = 1000;
+	rdim = 5000;
 	print 'small test set selected, only loading 1000 rows'
 
 S = lil_matrix((rdim, cdim))
@@ -90,6 +90,16 @@ elif options.algorithm.lower()=="hierarchical":
 	print "a"
 
 print len(prediction)
+
+hist = {}
+for item in prediction:
+	if item in hist:
+		hist[item] += 1
+	else:
+		hist[item] = 1
+
+for key in hist:
+	print key," ", hist[key]
 
 #TODO:
 #1. measure time
