@@ -43,7 +43,7 @@ cdim = 4317
 
 if options.small_data:
 	rdim = 5000;
-	print 'small test set selected, only loading 1000 rows'
+	print 'small test set selected, only loading 5000 rows'
 
 S = lil_matrix((rdim, cdim))
 
