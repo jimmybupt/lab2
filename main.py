@@ -3,7 +3,8 @@ print 'CSE 5243 Clustering Analysis by Kun Liu & Zhe Dong'
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="in_file",
-		 help="the input vector",metavar="FILE")
+		 help="the input vector",metavar="FILE"
+		 default="vector1.txt")
 parser.add_option("-o", "--output", dest="out_file",
 		  help="the output matrix file", metavar="FILE")
 parser.add_option("-m", "--metric", dest="metric",
