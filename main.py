@@ -35,7 +35,7 @@ import sys
 from scipy.sparse import *
 info = open("info.txt",'r');
 rdim = int(info.readline())
-cdmi = int(info.readline())
+cdim = int(info.readline())
 
 
 if options.small_data:
