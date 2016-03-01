@@ -34,11 +34,8 @@ import ast
 import sys
 from scipy.sparse import *
 info = open("info.txt",'r');
-cdim = 0
-rdim = 21578
-for line in info:
-	cdim = int(line)
-cdim = 4317	
+rdim = int(info.readline())
+cdmi = int(info.readline())
 
 
 if options.small_data:
