@@ -1,4 +1,4 @@
-print 'CSE 5243 Similarity Matrix by Kun Liu & Zhe Dong'
+print 'CSE 5243 Clustering Analysis by Kun Liu & Zhe Dong'
 
 from optparse import OptionParser
 parser = OptionParser()
