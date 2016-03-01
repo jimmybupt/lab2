@@ -13,9 +13,9 @@ parser.add_option("-a", "--algorithm", dest="algorithm",
 		  metavar="[DBSCAN|Other]",
 		  default="DBSCAN")
 parser.add_option("-e", "--eps", dest="epsilon", metavar="<Epsilon>",
-		  type="float", default=10.0)
+		  type="float", default=0.5)
 parser.add_option("-M", "--min-sample", dest="min_sample", metavar="<Min samples>",
-		  type="int", default=10)
+		  type="int", default=5)
 parser.add_option("-t", "--test", dest="small_data",
 		  action="store_true", default=False)
 parser.add_option("-k", dest="cluster", metavar="<Cluster>", type="int",
