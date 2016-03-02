@@ -3,7 +3,7 @@ print 'CSE 5243 Clustering Analysis by Kun Liu & Zhe Dong'
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-f", "--file", dest="in_file",
-		 help="the input vector",metavar="FILE"
+		 help="the input vector",metavar="FILE",
 		 default="vector1.txt")
 parser.add_option("-o", "--output", dest="out_file",
 		  help="the output matrix file", metavar="FILE")
@@ -45,6 +45,8 @@ if options.small_data:
 
 S = lil_matrix((rdim, cdim))
 
+import time
+start_time = time.time()
 print "Reading vectors... ",
 sys.stdout.flush()
 i = 0
@@ -62,9 +64,12 @@ for line in label_file:
 	if i==rdim:
 		break
 
-print "done"
-S = S.tocsr()
+print "done(",str(time.time()-start_time),"s )"
 
+print "clustering ...",
+sys.stdout.flush()
+start_time = time.time()
+S = S.tocsr()
 
 #choose cluster method
 import cluster
@@ -74,9 +79,9 @@ if options.algorithm.lower()=="dbscan":
 elif options.algorithm.lower()=="kmeans":
 	prediction=cluster.kmeans_clustering(options.cluster, S)
 
+print "done(",str(time.time()-start_time),"s )"
+
 print len(prediction)
-
-
 #print cluster result
 hist = {}
 for item in prediction:
@@ -88,11 +93,14 @@ for item in prediction:
 for key in hist:
 	print key," ", hist[key]
 
+print "evluating ..."
+start_time = time.time()
+sys.stdout.flush()
 #evaluate result
 import quality
 
 quality.quality_evaluation(prediction, S.toarray(), label)
-	
+print "evaluating done in (",str(time.time()-start_time), "s )"	
 
 
 #TODO:
