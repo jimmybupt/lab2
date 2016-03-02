@@ -7,10 +7,10 @@ parser.add_option("-f", "--file", dest="in_file",
 parser.add_option("-o", "--output", dest="out_file",
 		  help="the output matrix file", metavar="FILE")
 parser.add_option("-m", "--metric", dest="metric",
-		  metavar="[Euclidean|Other]",
+		  metavar="[Euclidean|Manhattan]",
 		 default="euclidean", help="Type of similarity")
 parser.add_option("-a", "--algorithm", dest="algorithm",
-		  metavar="[DBSCAN|Other]",
+		  metavar="[DBSCAN|Hierarchical]",
 		  default="DBSCAN")
 parser.add_option("-e", "--eps", dest="epsilon", metavar="<Epsilon>",
 		  type="float", default=0.5)
@@ -20,7 +20,7 @@ parser.add_option("-t", "--test", dest="small_data",
 		  action="store_true", default=False)
 parser.add_option("-k", dest="cluster", metavar="<Cluster>", type="int",
 		  default=2)
-parser.add_option("-l", dest="linkage", metavar="[Ward|Other]",
+parser.add_option("-l", dest="linkage", metavar="[Ward|Average|Complete]",
 		  default="ward")
 
 (options, args) = parser.parse_args()
@@ -39,8 +39,8 @@ cdim = int(info.readline())
 
 
 if options.small_data:
-	rdim = 5000;
-	print 'small test set selected, only loading 5000 rows'
+	rdim = 1000;
+	print 'small test set selected, only loading 1000 rows'
 
 S = lil_matrix((rdim, cdim))
 
