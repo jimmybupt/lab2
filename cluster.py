@@ -16,7 +16,7 @@ def hierarchical_clustering(n_clusters,word_vector,metric,link):
   
 #DBSCAN clustering function
 def DBSCAN_clustering(eps,sample_size, word_vector,metric):
-  model= DBSCAN(eps=eps,min_samples=sample_size, metric=metric) 
+  model= DBSCAN(eps=eps,min_samples=sample_size, metric=metric,algorithm='brute') 
   prediction=model.fit_predict(word_vector)
   return prediction
 
